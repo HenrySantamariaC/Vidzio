@@ -1,0 +1,44 @@
+.stream-video-container {
+  width: 100%;
+  min-width: 250px;
+  aspect-ratio: 4/3;
+}
+.stream-question-container {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+.recording-start {
+  animation: pulse 1s ease infinite;
+}
+@keyframes pulse {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.circular-progress {
+  position: relative;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  background: conic-gradient(var(--color-active) 0deg, var(--color-white) 0deg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.circular-progress::before {
+  content: "";
+  position: absolute;
+  height: 80%;
+  width: 80%;
+  border-radius: 50%;
+  background-color: var(--color-background);
+}
+.controls-container {
+  background-color: var(--color-background);
+}

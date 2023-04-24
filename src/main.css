@@ -1,0 +1,17 @@
+:root {
+  --color-background: #181828;
+  --color-action: #f11b43;
+  --color-active: #f11b43;
+  --color-white: #ffffff;
+}
+
+body {
+  background-color: var(--color-background) !important;
+}
+.fs-7 {
+  font-size: 0.8rem !important;
+}
+
+.bg-main {
+  background-color: var(--color-background) !important;
+}

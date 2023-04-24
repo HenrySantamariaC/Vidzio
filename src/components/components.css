@@ -1,0 +1,13 @@
+.logo {
+  height: 60px;
+}
+.menu-list {
+  list-style: none;
+}
+.menu-list > li {
+  padding: 0 10px;
+}
+.menu-list > li.active-link {
+  color: var(--color-active);
+  border-left: 2px var(--color-active) solid;
+}

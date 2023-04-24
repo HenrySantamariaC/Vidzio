@@ -1,0 +1,28 @@
+.question-card {
+  width: 100%;
+  max-height: 300px;
+  aspect-ratio: 3/4;
+}
+.question-card > .video-container {
+  height: 100%;
+}
+.question-card > .video-container img {
+  width: 50px;
+}
+.question-card > .video-container video {
+  object-fit: cover;
+}
+.shadow-video {
+  background-color: #00000000;
+}
+
+.question-text {
+  background: rgb(0, 0, 0);
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.75) 0%,
+    rgba(0, 0, 0, 0.5) 33%,
+    rgba(0, 0, 0, 0.25) 66%,
+    rgba(0, 0, 0, 0) 100%
+  );
+}
