@@ -15,3 +15,6 @@ body {
 .bg-main {
   background-color: var(--color-background) !important;
 }
+.cursor-pointer {
+  cursor: pointer !important;
+}
