@@ -61,12 +61,6 @@ function VideoPlayerComponent({ urlObject, updateUrlAnswer }) {
   };
 
   useEffect(() => {
-    console.log(
-      typeof urlObject,
-      typeof urlObject === "string",
-      urlObject !== "",
-      urlObject
-    );
     if (urlObject !== "") {
       videoContainer.current.src = urlObject;
       setRecordingState(recordingStates.endRecording);

@@ -25,13 +25,11 @@ export const useQuestionStore = create(
       addAnswerQuestion: (id, answer) =>
         set((state) => ({
           listQuestions: state.listQuestions.map((question) =>
-            question.id === id ? { ...question, urlObject: answer } : question
+            question.id === id
+              ? { ...question, urlObject: answer, isAnswered: true }
+              : question
           ),
         })),
-      getList: () => {
-        const { listQuestions } = get();
-        console.log(listQuestions);
-      },
     }),
     {
       name: "vidzio-store",
