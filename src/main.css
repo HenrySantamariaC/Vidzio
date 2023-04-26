@@ -18,3 +18,13 @@ body {
 .cursor-pointer {
   cursor: pointer !important;
 }
+.btn-link {
+  background-color: rgba(255, 255, 255, 0.05);
+  text-decoration: none !important;
+  color: var(--color-white) !important;
+  border-radius: 0.5rem;
+  padding: 8px 12px;
+}
+.btn-link:hover {
+  background-color: var(--color-active);
+}

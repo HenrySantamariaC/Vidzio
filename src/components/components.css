@@ -4,10 +4,12 @@
 .menu-list {
   list-style: none;
 }
-.menu-list > li {
+.menu-list > a {
   padding: 0 10px;
+  text-decoration: none;
+  color: var(--color-white);
 }
-.menu-list > li.active-link {
+.menu-list > a.active-link {
   color: var(--color-active);
   border-left: 2px var(--color-active) solid;
 }

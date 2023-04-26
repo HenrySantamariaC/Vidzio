@@ -3,6 +3,7 @@ import Logo from "./../assets/icons/VidzioLogo.svg";
 import HomeIcon from "./../assets/icons/Home.svg";
 import SettingsIcon from "./../assets/icons/Settings.svg";
 import InfoIcon from "./../assets/icons/info.svg";
+import { Link, NavLink } from "react-router-dom";
 
 function SideBarComponent({ children }) {
   return (
@@ -19,18 +20,33 @@ function SideBarComponent({ children }) {
       </div>
       <div className="col-3 col-lg-2 ">
         <ul className="menu-list d-flex flex-column gap-4 p-2">
-          <li className="d-flex align-items-center active-link">
-            <img src={HomeIcon} alt="home-icon" width={20} />
-            <span className="ps-1">Home</span>
-          </li>
-          <li>
-            <img src={SettingsIcon} alt="home-icon" width={20} />
-            <span className="ps-1">Settings</span>
-          </li>
-          <li>
-            <img src={InfoIcon} alt="home-icon" width={20} />
-            <span className="ps-1">About</span>
-          </li>
+          <NavLink
+            to="/"
+            className={({ isActive }) => (isActive ? "active-link" : "")}
+          >
+            <li>
+              <img src={HomeIcon} alt="home-icon" width={20} />
+              <span className="ps-1">Home</span>
+            </li>
+          </NavLink>
+          <NavLink
+            to="/app"
+            className={({ isActive }) => (isActive ? "active-link" : "")}
+          >
+            <li>
+              <img src={SettingsIcon} alt="home-icon" width={20} />
+              <span className="ps-1">Settings</span>
+            </li>
+          </NavLink>
+          <NavLink
+            to="/about"
+            className={({ isActive }) => (isActive ? "active-link" : "")}
+          >
+            <li>
+              <img src={InfoIcon} alt="home-icon" width={20} />
+              <span className="ps-1">About</span>
+            </li>
+          </NavLink>
         </ul>
       </div>
       <div className="col ">{children}</div>

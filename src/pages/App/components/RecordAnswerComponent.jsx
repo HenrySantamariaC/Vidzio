@@ -1,13 +1,16 @@
+import { useEffect } from "react";
 import VideoPlayerComponent from "./VideoPlayerComponent";
 
-function RecordAnswerComponent() {
+function RecordAnswerComponent({ data }) {
   return (
-    <div className="rounded-3 overflow-hidden w-75 mx-auto fs-7">
-      <VideoPlayerComponent />
-      <div className="stream-question-container p-3">
-        <span>¿Cual fue tu videojuego favorito durante tu infancia? </span>
+    <>
+      <div className="rounded-3 overflow-hidden fs-7">
+        <VideoPlayerComponent urlObject={data.urlObject} />
+        <div className="stream-question-container p-3">
+          <span>{data.text}</span>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 

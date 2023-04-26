@@ -3,15 +3,17 @@ import PlayIcon from "./../../../assets/icons/play.svg";
 import WebRtcClass from "./../../../utils/WebRtcClass.js";
 import { formatingTime } from "./../../../utils/utilities.js";
 import { useEffect, useRef, useState } from "react";
+import { useQuestionStore } from "./../../../store/questionStore";
 import ControlsVideoPlayerComponent from "./ControlsVideoPlayerComponent";
 
-function VideoPlayerComponent() {
+function VideoPlayerComponent({ urlObject }) {
   const recordingStates = {
     beforeRecording: 0,
     recording: 1,
     endRecording: 2,
   };
 
+  const { setUrlObjectQuestion } = useQuestionStore();
   const [recordingState, setRecordingState] = useState(
     recordingStates.beforeRecording
   );
@@ -36,6 +38,7 @@ function VideoPlayerComponent() {
   const handlePlayVideo = () => {
     videoContainer.current.srcObject = null;
     videoContainer.current.src = WebRtcClass.playingVideo();
+    setUrlObjectQuestion(videoContainer.current.src);
     videoContainer.current.autoplay = false;
     videoContainer.current.muted = false;
     videoContainer.current.play();
@@ -59,6 +62,17 @@ function VideoPlayerComponent() {
     videoContainer.current.srcObject = await WebRtcClass.getMediaDevices();
   };
 
+  useEffect(() => {
+    console.log(
+      typeof urlObject,
+      typeof urlObject === "string",
+      urlObject !== ""
+    );
+    if (typeof urlObject === "string" && urlObject !== "") {
+      videoContainer.current.src = urlObject;
+      setRecordingState(recordingStates.endRecording);
+    }
+  }, []);
   useEffect(() => {
     const timer = intervalCounterTime();
     return () => {

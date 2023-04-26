@@ -3,7 +3,7 @@ import "./../Home.css";
 import IconPlay from "./../../../assets/icons/play_circle.svg";
 import videoExample from "./../../../assets/video/sea.webm";
 
-function QuestionComponent() {
+function QuestionComponent({ textQuestion }) {
   const cardContainer = useRef();
   const videoSource = useRef();
 
@@ -34,7 +34,7 @@ function QuestionComponent() {
             <div className="position-absolute">
               <img src={IconPlay} alt="icon-playvideo" className=" m-2" />
               <div className="question-text px-2 py-3 text-white">
-                <h6>¿Cual fue tu videojuego favorito durante tu infancia</h6>
+                <h6 className="fs-7">{textQuestion}</h6>
               </div>
             </div>
           </div>
