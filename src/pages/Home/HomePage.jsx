@@ -14,7 +14,10 @@ function HomePage() {
             className="col-3 d-flex justify-content-center"
             key={question.id}
           >
-            <QuestionCardComponent textQuestion={question.text} />
+            <QuestionCardComponent
+              textQuestion={question.text}
+              urlQuestion={question.urlObject}
+            />
           </Link>
         ))}
       </div>

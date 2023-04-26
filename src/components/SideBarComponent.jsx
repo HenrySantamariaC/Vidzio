@@ -38,15 +38,7 @@ function SideBarComponent({ children }) {
               <span className="ps-1">Home</span>
             </li>
           </NavLink>
-          <NavLink
-            to="/app"
-            className={({ isActive }) => (isActive ? "active-link" : "")}
-          >
-            <li>
-              <img src={SettingsIcon} alt="home-icon" width={20} />
-              <span className="ps-1">Settings</span>
-            </li>
-          </NavLink>
+
           <NavLink
             to="/about"
             className={({ isActive }) => (isActive ? "active-link" : "")}

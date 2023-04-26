@@ -3,7 +3,7 @@ import "./../Home.css";
 import IconPlay from "./../../../assets/icons/play_circle.svg";
 import videoExample from "./../../../assets/video/sea.webm";
 
-function QuestionComponent({ textQuestion }) {
+function QuestionComponent({ textQuestion, urlQuestion }) {
   const cardContainer = useRef();
   const videoSource = useRef();
 
@@ -28,7 +28,10 @@ function QuestionComponent({ textQuestion }) {
               id="video-example"
               ref={videoSource}
             >
-              <source src={videoExample} type="video/webm" />
+              <source
+                src={urlQuestion !== "" ? urlQuestion : videoExample}
+                type="video/webm"
+              />
             </video>
             <div className="shadow-video position-absolute h-100 w-100"></div>
             <div className="position-absolute">
