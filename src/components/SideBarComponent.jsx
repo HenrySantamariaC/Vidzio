@@ -3,9 +3,18 @@ import Logo from "./../assets/icons/VidzioLogo.svg";
 import HomeIcon from "./../assets/icons/Home.svg";
 import SettingsIcon from "./../assets/icons/Settings.svg";
 import InfoIcon from "./../assets/icons/info.svg";
-import { Link, NavLink } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { useQuestionStore } from "../store/questionStore";
+import { useEffect } from "react";
 
 function SideBarComponent({ children }) {
+  const loadQuestionsList = useQuestionStore(
+    (state) => state.loadQuestionsList
+  );
+
+  useEffect(() => {
+    loadQuestionsList();
+  }, []);
   return (
     <div className="row text-white">
       <div className="row">

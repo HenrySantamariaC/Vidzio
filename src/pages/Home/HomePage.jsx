@@ -1,15 +1,9 @@
-import React, { useEffect } from "react";
 import QuestionCardComponent from "./components/QuestionCardComponent";
 import { useQuestionStore } from "./../../store/questionStore";
 import { Link } from "react-router-dom";
 
 function HomePage() {
   const questions = useQuestionStore((state) => state.listQuestions);
-  const getQuestionsList = useQuestionStore((state) => state.getQuestionsList);
-
-  useEffect(() => {
-    getQuestionsList();
-  }, []);
 
   return (
     <div className="text-white">
