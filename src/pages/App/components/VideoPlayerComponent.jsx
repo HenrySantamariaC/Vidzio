@@ -1,15 +1,9 @@
-import WebRtcClass from "./../../../utils/WebRtcClass.js";
+import WebRtcClass from "@/utils/WebRtcClass.js";
 import { useEffect, useRef, useState } from "react";
+import { recordingStates } from "@/config/config";
 import ControlsVideoPlayerComponent from "./ControlsVideoPlayerComponent";
 
 function VideoPlayerComponent({ urlObject, updateUrlAnswer }) {
-  const recordingStates = {
-    beforeRecording: 0,
-    recording: 1,
-    endRecording: 2,
-    playing: 3,
-  };
-
   const [recordingState, setRecordingState] = useState(
     recordingStates.beforeRecording
   );
@@ -27,8 +21,8 @@ function VideoPlayerComponent({ urlObject, updateUrlAnswer }) {
   };
   const handleStopRecording = () => {
     setTimeInSeconds(0);
-    setRecordingState(recordingStates.endRecording);
     WebRtcClass.stopRecording();
+    setRecordingState(recordingStates.endRecording);
     console.log("¡Haz hecho clic en el botón! stop");
   };
   const handleLoadVideo = () => {
@@ -45,9 +39,7 @@ function VideoPlayerComponent({ urlObject, updateUrlAnswer }) {
   const intervalCounterTime = () => {
     let interval = null;
     if (recordingState === recordingStates.recording && timeInSeconds <= 120) {
-      interval = setInterval(() => {
-        setTimeInSeconds((time) => time + 1);
-      }, 1000);
+      interval = setInterval(() => setTimeInSeconds((time) => time + 1), 1000);
       return interval;
     }
     if (recordingState === recordingStates.recording) {
@@ -56,6 +48,22 @@ function VideoPlayerComponent({ urlObject, updateUrlAnswer }) {
     }
     return interval;
   };
+
+  const intervalCounterTimes = () => {
+    if (recordingState !== recordingStates.recording || timeInSeconds > 120) {
+      return null;
+    }
+    const interval = setInterval(
+      () => setTimeInSeconds((time) => time + 1),
+      1000
+    );
+    const handleStop = () => {
+      clearInterval(interval);
+      handleStopRecording();
+    };
+    return handleStop;
+  };
+
   const loadMediaDevices = async () => {
     videoContainer.current.srcObject = await WebRtcClass.getMediaDevices();
   };
