@@ -22,11 +22,11 @@ export const useQuestionStore = create(
           currentIndex: index,
         }));
       },
-      addAnswerQuestion: (id, answer) =>
+      addAnswerQuestion: (id, { urlObject, urlThumbnail }) =>
         set((state) => ({
           listQuestions: state.listQuestions.map((question) =>
             question.id === id
-              ? { ...question, urlObject: answer, isAnswered: true }
+              ? { ...question, urlObject, urlThumbnail, isAnswered: true }
               : question
           ),
         })),

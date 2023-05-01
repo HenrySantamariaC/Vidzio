@@ -33,7 +33,7 @@ const stopRecording = () => {
   mediaRecorder.stream.getTracks().forEach((track) => track.stop());
 };
 
-const playingVideo = () => {
+const getUrlVideo = () => {
   const superBuffer = new Blob(recordedBlobs, { type: "video/webm" });
   return window.URL.createObjectURL(superBuffer);
 };
@@ -71,5 +71,5 @@ export default {
   getMediaDevices,
   startRecording,
   stopRecording,
-  playingVideo,
+  getUrlVideo,
 };

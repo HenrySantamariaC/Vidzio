@@ -1,30 +1,49 @@
-import RecordingIcon from "./../../../assets/icons/recording.svg";
-import CircleRecIcon from "./../../../assets/icons/circle-rec.svg";
-import StopIcon from "./../../../assets/icons/stop-recording.svg";
-import PlayIcon from "./../../../assets/icons/play.svg";
-import SaveIcon from "./../../../assets/icons/save-video.svg";
-import RepeatIcon from "./../../../assets/icons/repeat.svg";
-import { useEffect, useRef } from "react";
-import { formatingTime } from "../../../utils/utilities";
+import { useEffect, useRef, useState } from "react";
+import { formatingTime } from "@/utils/utilities";
+import { recordingStates } from "@/config/config";
+import useVideoTimer from "@/hooks/useVideoTimer";
+import RecordingIcon from "@/assets/icons/recording.svg";
+import CircleRecIcon from "@/assets/icons/circle-rec.svg";
+import StopIcon from "@/assets/icons/stop-recording.svg";
+import PlayIcon from "@/assets/icons/play.svg";
+import PauseIcon from "@/assets/icons/pause.svg";
+import RepeatIcon from "@/assets/icons/repeat.svg";
 
 function ControlsVideoPlayerComponent({
   handleStartRecording,
   handleStopRecording,
-  handleLoadVideo,
   handlePlayVideo,
-  recordingState,
-  time,
+  existPrevVideo,
 }) {
-  const recordingStates = {
-    beforeRecording: 0,
-    recording: 1,
-    endRecording: 2,
-    playing: 3,
+  const progressTimer = useRef();
+  const { time, start, stop } = useVideoTimer();
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [recordingState, setRecordingState] = useState(
+    recordingStates.beforeRecording
+  );
+
+  const handleRecording = () => {
+    setRecordingState(recordingStates.recording);
+    handleStartRecording();
+    start();
+  };
+  const handleStopping = () => {
+    setRecordingState(recordingStates.endRecording);
+    stop();
+    handleStopRecording();
+  };
+  const handlePlaying = () => {
+    setIsPlaying(!isPlaying);
+    handlePlayVideo(isPlaying);
   };
 
-  const progressTimer = useRef();
-
   useEffect(() => {
+    existPrevVideo
+      ? setRecordingState(recordingStates.endRecording)
+      : setRecordingState(recordingStates.beforeRecording);
+  }, [existPrevVideo]);
+  useEffect(() => {
+    if (time > 120) handleStopping();
     progressTimer.current.style.background = `conic-gradient(
       var(--color-active) ${time * 3}deg,
       var(--color-white) 0deg
@@ -52,23 +71,14 @@ function ControlsVideoPlayerComponent({
           <>
             <div
               className="bg-main p-1 rounded-3 cursor-pointer"
-              onClick={handleLoadVideo}
+              onClick={handlePlaying}
             >
-              <img src={SaveIcon} alt="play icon" width="16px" />
-              <span> Save</span>
-            </div>
-          </>
-        ) : (
-          <></>
-        )}
-        {recordingState === recordingStates.playing ? (
-          <>
-            <div
-              className="bg-main p-1 rounded-3 cursor-pointer"
-              onClick={handlePlayVideo}
-            >
-              <img src={PlayIcon} alt="play icon" width="16px" />
-              <span>Play</span>
+              <img
+                src={isPlaying ? PlayIcon : PauseIcon}
+                alt="play icon"
+                width="16px"
+              />
+              <span>{isPlaying ? "Play" : "Pause"}</span>
             </div>
           </>
         ) : (
@@ -77,7 +87,7 @@ function ControlsVideoPlayerComponent({
       </div>
       <div className="d-flex justify-content-center p-2">
         <div
-          className="controls-container d-flex gap-2 rounded-circle p-2 cursor-pointer"
+          className="controls-container rounded-circle p-2 cursor-pointer"
           id="btn-container"
         >
           <img
@@ -87,14 +97,14 @@ function ControlsVideoPlayerComponent({
               recordingState == recordingStates.beforeRecording ? "" : "d-none"
             }
             width="30px"
-            onClick={handleStartRecording}
+            onClick={handleRecording}
           />
           <div
             className={`circular-progress ${
               recordingState == recordingStates.recording ? "" : "d-none"
             }`}
             ref={progressTimer}
-            onClick={handleStopRecording}
+            onClick={handleStopping}
           >
             <img
               src={StopIcon}
@@ -113,7 +123,7 @@ function ControlsVideoPlayerComponent({
                 ? ""
                 : "d-none"
             }
-            onClick={handleStartRecording}
+            onClick={handleRecording}
           />
         </div>
       </div>

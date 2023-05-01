@@ -23,3 +23,19 @@ export const generarUUID = () => {
 
   return uuid;
 };
+
+export const generateMiniatureUrl = async (videoTag) => {
+  const canvas = document.createElement("canvas");
+  const ctx = canvas.getContext("2d");
+  canvas.width = videoTag.offsetWidth;
+  canvas.height = videoTag.offsetHeight;
+  videoTag.currentTime = 4;
+  await wait(1);
+  ctx.drawImage(videoTag, 0, 0, videoTag.offsetWidth, videoTag.offsetHeight);
+  return await new Promise((resolve) => {
+    canvas.toBlob((obj) => {
+      let url = URL.createObjectURL(obj);
+      resolve(url);
+    });
+  });
+};

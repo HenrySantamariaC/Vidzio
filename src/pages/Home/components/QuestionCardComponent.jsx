@@ -3,7 +3,7 @@ import "./../Home.css";
 import IconPlay from "./../../../assets/icons/play_circle.svg";
 import videoExample from "./../../../assets/video/sea.webm";
 
-function QuestionComponent({ textQuestion, urlQuestion }) {
+function QuestionComponent({ textQuestion, urlQuestion, urlThumbnail }) {
   const cardContainer = useRef();
   const videoSource = useRef();
 
@@ -26,6 +26,7 @@ function QuestionComponent({ textQuestion, urlQuestion }) {
               loop
               className="bg-black position-absolute h-100 w-100"
               id="video-example"
+              poster={urlThumbnail}
               ref={videoSource}
             >
               <source

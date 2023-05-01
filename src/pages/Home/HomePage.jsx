@@ -17,6 +17,7 @@ function HomePage() {
             <QuestionCardComponent
               textQuestion={question.text}
               urlQuestion={question.urlObject}
+              urlThumbnail={question.urlThumbnail}
             />
           </Link>
         ))}

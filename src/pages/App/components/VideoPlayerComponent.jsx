@@ -1,100 +1,60 @@
-import WebRtcClass from "@/utils/WebRtcClass.js";
 import { useEffect, useRef, useState } from "react";
-import { recordingStates } from "@/config/config";
+import { wait, generateMiniatureUrl } from "@/utils/utilities";
+import WebRtcClass from "@/utils/WebRtcClass.js";
 import ControlsVideoPlayerComponent from "./ControlsVideoPlayerComponent";
+import { useQuestionStore } from "@/store/questionStore";
 
 function VideoPlayerComponent({ urlObject, updateUrlAnswer }) {
-  const [recordingState, setRecordingState] = useState(
-    recordingStates.beforeRecording
-  );
-  const [timeInSeconds, setTimeInSeconds] = useState(0);
+  const [existPrevVideo, setExistPrevVideo] = useState(false);
+  const videoHtml = useRef();
 
-  const videoContainer = useRef();
-
+  // Handle functions
   const handleStartRecording = async () => {
-    videoContainer.current.autoplay = true;
-    videoContainer.current.muted = true;
-    await loadMediaDevices();
+    setVideoElement(await WebRtcClass.getMediaDevices(), true);
     WebRtcClass.startRecording();
-    setRecordingState(recordingStates.recording);
     console.log("¡Haz hecho clic en el botón! start");
   };
-  const handleStopRecording = () => {
-    setTimeInSeconds(0);
+  const handleStopRecording = async () => {
+    setVideoElement(null, false);
     WebRtcClass.stopRecording();
-    setRecordingState(recordingStates.endRecording);
+    await loadVideoUrl();
     console.log("¡Haz hecho clic en el botón! stop");
   };
-  const handleLoadVideo = () => {
-    videoContainer.current.srcObject = null;
-    videoContainer.current.autoplay = false;
-    videoContainer.current.muted = false;
-    videoContainer.current.src = WebRtcClass.playingVideo();
-    updateUrlAnswer(videoContainer.current.src);
-  };
-  const handlePlayVideo = () => {
-    videoContainer.current.play();
+  const handlePlayVideo = (isPlaying) => {
+    isPlaying ? videoHtml.current.play() : videoHtml.current.pause();
   };
 
-  const intervalCounterTime = () => {
-    let interval = null;
-    if (recordingState === recordingStates.recording && timeInSeconds <= 120) {
-      interval = setInterval(() => setTimeInSeconds((time) => time + 1), 1000);
-      return interval;
-    }
-    if (recordingState === recordingStates.recording) {
-      clearInterval(interval);
-      handleStopRecording();
-    }
-    return interval;
+  // Other functions
+  const loadVideoUrl = async () => {
+    await wait(1);
+    videoHtml.current.src = await WebRtcClass.getUrlVideo();
+    let urlThumbnail = await generateMiniatureUrl(videoHtml.current);
+    updateUrlAnswer({
+      urlObject: videoHtml.current.src,
+      urlThumbnail: urlThumbnail,
+    });
+  };
+  const setVideoElement = (srcObject, isRecording) => {
+    videoHtml.current.autoplay = isRecording;
+    videoHtml.current.muted = isRecording;
+    videoHtml.current.srcObject = srcObject;
   };
 
-  const intervalCounterTimes = () => {
-    if (recordingState !== recordingStates.recording || timeInSeconds > 120) {
-      return null;
-    }
-    const interval = setInterval(
-      () => setTimeInSeconds((time) => time + 1),
-      1000
-    );
-    const handleStop = () => {
-      clearInterval(interval);
-      handleStopRecording();
-    };
-    return handleStop;
-  };
-
-  const loadMediaDevices = async () => {
-    videoContainer.current.srcObject = await WebRtcClass.getMediaDevices();
-  };
-
+  // useEffect Hooks
   useEffect(() => {
-    if (urlObject !== "") {
-      videoContainer.current.src = urlObject;
-      setRecordingState(recordingStates.playing);
-    } else {
-      videoContainer.current.src = "";
-      setRecordingState(recordingStates.beforeRecording);
-    }
+    videoHtml.current.src = urlObject;
+    urlObject !== "" ? setExistPrevVideo(true) : setExistPrevVideo(false);
   }, [urlObject]);
-  useEffect(() => {
-    const timer = intervalCounterTime();
-    return () => {
-      clearInterval(timer);
-    };
-  }, [recordingState]);
 
   return (
     <>
       <div className="stream-video-container bg-black position-relative">
         <div className="position-absolute w-100 h-100">
           <video
-            autoPlay
             playsInline
-            muted
             className=" h-100 w-100"
             id="video-example"
-            ref={videoContainer}
+            ref={videoHtml}
           ></video>
         </div>
         <div className="position-absolute w-100 h-100 d-flex flex-column justify-content-between">
@@ -102,9 +62,7 @@ function VideoPlayerComponent({ urlObject, updateUrlAnswer }) {
             handleStartRecording={handleStartRecording}
             handleStopRecording={handleStopRecording}
             handlePlayVideo={handlePlayVideo}
-            handleLoadVideo={handleLoadVideo}
-            recordingState={recordingState}
-            time={timeInSeconds}
+            existPrevVideo={existPrevVideo}
           />
         </div>
       </div>

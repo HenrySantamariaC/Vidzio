@@ -18,9 +18,6 @@ function RecordAnswerComponent({ uuid }) {
 
   useEffect(() => {
     getIndexQuestionById(uuid);
-  }, []);
-  useEffect(() => {
-    getIndexQuestionById(uuid);
   }, [uuid]);
 
   return (
